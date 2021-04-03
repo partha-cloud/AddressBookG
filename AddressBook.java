@@ -169,8 +169,13 @@ public class AddressBook {
     }
     public void countByState(){
         System.out.println(contactbook.stream().collect(Collectors.groupingBy((ContactInfo C) ->C.getState(),Collectors.counting())));
-
     }
+    public void sortPerson()
+    {
+        System.out.println("------Names are sorted alphabetical order----");
+        contactbook.stream().sorted(Comparator.comparing(contactInfo -> contactInfo.getFirstName())).forEach(contactInfo -> System.out.println(contactInfo));
+    }
+
 
     public static void main(String[] args)
     {
@@ -187,7 +192,8 @@ public class AddressBook {
         System.out.println("8. Search Person By State");
         System.out.println("9.Count by city");
         System.out.println("10.Count by state");
-        System.out.println("11.Exit");
+        System.out.println("11.sorting names in order");
+        System.out.println("12.Exit");
         int k=0;
         while(k==0)
         {
@@ -227,6 +233,9 @@ public class AddressBook {
                     address.countByState();
                     break;
                 case 11:
+                    address.sortPerson();
+                    break;
+                case 12:
                     System.out.println("Exit");
                     k = 1;
                     break;
