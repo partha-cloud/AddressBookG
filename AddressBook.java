@@ -10,6 +10,7 @@ public class AddressBook {
         System.out.println("Enter First Name");
         String first = scan.nextLine();
         duplicateCheck(first);
+
         System.out.println("Enter Last Name");
         String last = scan.nextLine();
         System.out.println("Enter Address");
@@ -27,7 +28,7 @@ public class AddressBook {
         ContactInfo contact = new ContactInfo(first, last, address, city, state,  email,mobileNo, zip);
         contactbook.add(contact);
         System.out.println("Contact added Successfully");
-        System.out.println("\n You can add multiple person's entry");
+
     }
     public void displayPerson()
     {
@@ -130,6 +131,7 @@ public class AddressBook {
             if (first.equals(contactName))
             {
                 System.out.println("This Person is Already Present");
+
             }
             else
             {
@@ -175,30 +177,53 @@ public class AddressBook {
         System.out.println("------Names are sorted alphabetical order----");
         contactbook.stream().sorted(Comparator.comparing(contactInfo -> contactInfo.getFirstName())).forEach(contactInfo -> System.out.println(contactInfo));
     }
+    public void sortPersonByCity(){
+	    /*
+	    	for proper understanding this concept run the program by commenting duplicateCheck method.
+	    		contactbook.stream().parallel().sequential().sorted(Comparator.comparing(contactInfo->contactInfo.getFirstName())).sorted(Comparator.comparing(contactInfo -> contactInfo.getCity())).forEachOrdered(contactInfo -> System.out.println(contactInfo));
+				Comparator<Employee> compareByFullName = compareByFirstName.thenComparing(compareByLastName);
+				Comparator<Employee> compareByFirstName = Comparator.comparing( Employee::getFirstName );
+	     */
+        System.out.println("sorting the persons by using city names");
+        Comparator<ContactInfo> compareFirstName=Comparator.comparing(ContactInfo::getFirstName);
+        Comparator<ContactInfo> compareCity=Comparator.comparing(ContactInfo::getCity);
+        Comparator<ContactInfo> compareBoth =compareFirstName.thenComparing(compareCity);
+        contactbook.stream().sorted( compareBoth ).forEach(contactInfo -> System.out.println(contactInfo));
+    }
+    public void sortPersonByPin(){
+
+        System.out.println("sorting the persons by using postal codes ");
+        Comparator<ContactInfo> compareFirstName=Comparator.comparing(ContactInfo::getFirstName);
+        Comparator<ContactInfo> comparePostal=Comparator.comparing(ContactInfo::getZip);
+        Comparator<ContactInfo> compareBoth =compareFirstName.thenComparing(comparePostal);
+        contactbook.stream().sorted( compareBoth ).forEach(contactInfo -> System.out.println(contactInfo));
+    }
 
 
     public static void main(String[] args)
     {
-        System.out.println("-------------Welcome To The Address Book Problem--------------------");
         AddressBook address = new AddressBook();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("1.Add Contact");
-        System.out.println("2.Edit Contact");
-        System.out.println("3.Display Contact");
-        System.out.println("4.Delete Contact");
-        System.out.println("5.Add New Address Book");
-        System.out.println("6.Display New Address Book");
-        System.out.println("7.Search Person By City");
-        System.out.println("8. Search Person By State");
-        System.out.println("9.Count by city");
-        System.out.println("10.Count by state");
-        System.out.println("11.sorting names in order");
-        System.out.println("12.Exit");
-        int k=0;
-        while(k==0)
-        {
+        System.out.println("-------------Welcome To the ADDRESS_BOOK_MANAGEMENT-APPLICATION------------------");
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Enter valid option to perform Book-Manager_Application(1-->ENTER,2-->EXIT):");
+        int option=sc.nextInt();
+        while(option!=2) {
+
+            System.out.println("1.Add Contact");
+            System.out.println("2.Edit Contact");
+            System.out.println("3.Display Contact");
+            System.out.println("4.Delete Contact");
+            System.out.println("5.Add New Address Book");
+            System.out.println("6.Display New Address Book");
+            System.out.println("7.Search Person By City");
+            System.out.println("8.Search Person By State");
+            System.out.println("9.Count by city");
+            System.out.println("10.Count by state");
+            System.out.println("11.sorting names in order");
+            System.out.println("12.sorting persons by city");
+            System.out.println("13.sorting persons by pin");
             System.out.println("Enter the choice:");
-            int choice = Integer.parseInt(sc.nextLine());
+            int choice = sc.nextInt();
 
             switch (choice) {
                 case 1:
@@ -236,10 +261,23 @@ public class AddressBook {
                     address.sortPerson();
                     break;
                 case 12:
-                    System.out.println("Exit");
-                    k = 1;
+                    address.sortPersonByCity();
                     break;
+                case 13:
+                    address.sortPersonByPin();
+                    break;
+                default:
+                    System.out.println("select valid operation[1/2]");
+
+            }
+            System.out.println("Enter choice(1-Enter/2-Exit):");
+            int option1=sc.nextInt();
+            if (option1==2)
+            {
+                System.out.println("OOPS!! you are choosing an Exit mode");
+                break;
             }
         }
+        System.out.println("THANKS FOR USING BOOK MANAGER-APPLICATION");
     }
 }
