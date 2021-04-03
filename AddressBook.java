@@ -2,34 +2,74 @@ import java.util.*;
 
 public class AddressBook {
     public int indexValue = 1;
-    public HashMap<Integer,ContactInfo> contacts = new HashMap<>();
+    public HashMap<Integer, ContactInfo> contacts = new HashMap<>();
+    public HashMap<String, AddressBook> addressBookList = new HashMap<String, AddressBook>();
     public static Scanner sc = new Scanner(System.in);
     static AddressBook addressbook = new AddressBook();
 
-    public void addContact () {
+    public AddressBook(String addressBookName) {
+    }
+
+    public AddressBook() {
+
+    }
+
+
+    public void menu() {
+        int choice = 1;
+        do {
+            System.out.println("Enter your choice\n1. Add Contact 2. Edit Contact 3. Delete Contact  4. Create New AddressBook  0. Exit");
+            int userInput = sc.nextInt();
+            switch (userInput) {
+                case 1:
+                    addressbook.addContact();
+                    break;
+                case 2:
+                    addressbook.editContact();
+                    break;
+                case 3:
+                    addressbook.deleteContact();
+                    break;
+                case 4:
+                    addressbook.createNewAddressBook();
+                    break;
+                default:
+                    System.out.println("You press exit button....\nThanks for using Book-Management-Application!");
+                    choice = 0;
+                    break;
+            }
+        }
+        while (choice != 0);
+    }
+
+    public void addContact() {
         System.out.println("Enter Number of person you want to add");
         int numOfPerson = sc.nextInt();
-        for (int add = 1; add <= numOfPerson; add++){
-            System.out.println("\nPerson : " + add+ " Enter First Name");
+        for (int add = 1; add <= numOfPerson; add++) {
+            System.out.println("\nPerson : " + add + " Enter First Name");
             String first = sc.next();
             sc.nextLine();
-            System.out.println("Person : " + add+ " Enter Last Name");
+            System.out.println("Person : " + add + " Enter Last Name");
             String last = sc.next();
             sc.nextLine();
-            System.out.println("Person : " + add+ " Enter Address");
+            System.out.println("Person : " + add + " Enter Address");
             String address = sc.next();
             sc.nextLine();
-            System.out.println("Person : " + add+ " Enter City");
+            System.out.println("Person : " + add + " Enter City");
             String city = sc.nextLine();
-            System.out.println("Person : " + add+ " Enter State");
+            System.out.println("Person : " + add + " Enter State");
             String state = sc.next();
             sc.nextLine();
-            System.out.println("Person : " + add+ " Enter Zip Code");
+            System.out.println("Person : " + add + " Enter Zip Code");
             int zip = sc.nextInt();
-            System.out.println("Person : " + add+ " Enter Phone Number");
+            System.out.println("Person : " + add + " Enter Phone Number");
             long phone = sc.nextLong();
-            System.out.println("Person : " + add+ " Enter E-mail");
+            System.out.println("Person : " + add + " Enter E-mail");
             String email = sc.next();
+            if (addressbook.check(first)) {
+                add--;
+                //continue;
+            }
             ContactInfo contact = new ContactInfo(first, last, address, city, state, zip, phone, email);
             contacts.put(indexValue, contact);
             indexValue++;
@@ -41,67 +81,83 @@ public class AddressBook {
         if (contacts.isEmpty())
             return false;
         else {
-            System.out.println("\nAdd contact again with different first name.");
             Iterator<Integer> itr = contacts.keySet().iterator();
             while (itr.hasNext()) {
                 int key = itr.next();
                 if (contacts.get(key).firstName.equals(checkName)) {
+                    System.out.println("\nAdd contact again with different first name.");
                     return true;
                 }
             }
         }
         return false;
     }
-    public void deleteContact() {
+
+    public void editContact() {
         if (contacts.isEmpty()) {
             System.out.println("Contact list is empty.");
-        } else {
-            System.out.println("Enter the first name to delete contact.");
+        }
+        else {
+            System.out.println("Enter the first name to edit contact.");
             String name = sc.next();
             Iterator<Integer> itr = contacts.keySet().iterator();
-            while(itr.hasNext()) {
+            while (itr.hasNext()) {
                 int key = itr.next();
                 if (contacts.get(key).firstName.equals(name)) {
-                    contacts.remove(key);
-                    System.out.println("Contact deleted with first name : "+name);
+                    System.out.println("\nEnter First Name to Edit");
+                    String first = sc.next();
+                    sc.nextLine();
+                    System.out.println("Enter Last Name to Edit");
+                    String last = sc.next();
+                    sc.nextLine();
+                    System.out.println("Enter Address to Edit");
+                    String address = sc.next();
+                    sc.nextLine();
+                    System.out.println("Enter City to Edit");
+                    String city = sc.nextLine();
+                    System.out.println("Enter State to Edit");
+                    String state = sc.next();
+                    sc.nextLine();
+                    System.out.println("Enter Zip Code to Edit");
+                    int zip = sc.nextInt();
+                    System.out.println("Enter Phone Number to Edit");
+                    long phone = sc.nextLong();
+                    System.out.println("Enter E-mail to Edit");
+                    String email = sc.next();
+                    ContactInfo contact = new ContactInfo(first, last, address, city, state, zip, phone, email);
+                    contacts.put(key, contact);
+                    System.out.println("Contact edited with given first name : " + name);
                 }
             }
         }
     }
 
-    public static void main (String [] args){
-
-        System.out.println("---------------WELCOME TO THE ADDRESS_BOOK_MANAGEMENT SYSTEM-------------");
-        Scanner sc=new Scanner(System.in);
-        int increment=0;
-        System.out.println("Enter valid option to perform Book-Manager_Application(1-->ENTER,2-->EXIT):");
-        int option=sc.nextInt();
-        while(option !=2) {
-            System.out.println("select the operations(1,2,3) you want to perform 1)Add 2)Delete \n");
-            int choose =sc.nextInt();
-            switch(choose)
-            {
-                case 1:
-                    System.out.println("Adding credentials to the Application");
-                    addressbook.addContact();
-                    break;
-
-                case 2:
-                    System.out.println("currently you are in Delete-mode ,once you delete it's not revert back \n");
-                    addressbook.deleteContact();
-                    break;
-
-                default:
-                    System.out.println("select valid operation[1/2]");
-            }
-            System.out.println("Enter choice(1-Enter/2-Exit):");
-            int option1=sc.nextInt();
-            if (option1==2)
-            {
-                System.out.println("OOPS!! you are choosing an Exit mode");
-                break;
+    public void deleteContact() {
+        if (contacts.isEmpty()) {
+            System.out.println("Contact list is empty.");
+        }
+        else {
+            System.out.println("Enter the first name to delete contact.");
+            String name = sc.next();
+            Iterator<Integer> itr = contacts.keySet().iterator();
+            while (itr.hasNext()) {
+                int key = itr.next();
+                if (contacts.get(key).firstName.equals(name)) {
+                    contacts.remove(key);
+                    System.out.println("Contact deleted with first name : " + name);
+                }
             }
         }
-        System.out.println("THANKS FOR USING BOOK MANAGER-APPLICATION");
+    }
+
+    public void createNewAddressBook() {
+        System.out.println("Enter the name for Address Book");
+        String addressBookName = sc.next();
+        AddressBook addressBookList= new AddressBook(addressBookName);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("-----Welcome to Address BOOK MANAGEMENT SYSTEM-----\n");
+        addressbook.menu();
     }
 }

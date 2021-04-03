@@ -1,4 +1,5 @@
 public class ContactInfo {
+    public String firstName;
     String FIRST_NAME;
     String LAST_NAME;
     String ADDRESS;
@@ -19,6 +20,9 @@ public class ContactInfo {
         this.COUNTRY=country;
         this.CONTACT_NUMBER=mob;
         this.EMAIL=mail;
+    }
+
+    public ContactInfo(String first, String last, String address, String city, String state, int zip, long phone, String email) {
     }
 
     public String toString() {
