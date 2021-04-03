@@ -18,7 +18,7 @@ public class AddressBook {
     public void menu() {
         int choice = 1;
         do {
-            System.out.println("Enter your choice\n1. Add Contact 2. Edit Contact 3. Delete Contact  4. Create New AddressBook  0. Exit");
+            System.out.println("Enter your choice 1.)Add Contact 2.) Edit Contact 3.) Delete Contact 4.) Create New AddressBook 5.)Get name by using city 6.)Get name by using State 0.) Exit");
             int userInput = sc.nextInt();
             switch (userInput) {
                 case 1:
@@ -33,8 +33,14 @@ public class AddressBook {
                 case 4:
                     addressbook.createNewAddressBook();
                     break;
+                case 5:
+                    addressbook.searchPersonByCity();
+                    break;
+                case 6:
+                    addressbook.searchPersonByState();
+                    break;
                 default:
-                    System.out.println("You press exit button....\nThanks for using Book-Management-Application!");
+                    System.out.println("You press Exit button....\nThanks for using Book-Management-Application !");
                     choice = 0;
                     break;
             }
@@ -43,7 +49,7 @@ public class AddressBook {
     }
 
     public void addContact() {
-        System.out.println("Enter Number of person you want to add");
+        System.out.println("Enter Number of persons you want to add");
         int numOfPerson = sc.nextInt();
         for (int add = 1; add <= numOfPerson; add++) {
             System.out.println("\nPerson : " + add + " Enter First Name");
@@ -68,7 +74,7 @@ public class AddressBook {
             String email = sc.next();
             if (addressbook.check(first)) {
                 add--;
-                //continue;
+                continue;
             }
             ContactInfo contact = new ContactInfo(first, last, address, city, state, zip, phone, email);
             contacts.put(indexValue, contact);
@@ -96,8 +102,7 @@ public class AddressBook {
     public void editContact() {
         if (contacts.isEmpty()) {
             System.out.println("Contact list is empty.");
-        }
-        else {
+        } else {
             System.out.println("Enter the first name to edit contact.");
             String name = sc.next();
             Iterator<Integer> itr = contacts.keySet().iterator();
@@ -135,8 +140,7 @@ public class AddressBook {
     public void deleteContact() {
         if (contacts.isEmpty()) {
             System.out.println("Contact list is empty.");
-        }
-        else {
+        } else {
             System.out.println("Enter the first name to delete contact.");
             String name = sc.next();
             Iterator<Integer> itr = contacts.keySet().iterator();
@@ -153,11 +157,42 @@ public class AddressBook {
     public void createNewAddressBook() {
         System.out.println("Enter the name for Address Book");
         String addressBookName = sc.next();
-        AddressBook addressBookList= new AddressBook(addressBookName);
+        AddressBook addressBookList1 = new AddressBook(addressBookName);
+    }
+
+    public void searchPersonByCity(){
+        System.out.println("Enter the city to search person.");
+        String cityName = sc.next();
+        Iterator<Integer> itr = contacts.keySet().iterator();
+        while (itr.hasNext()) {
+            int key = itr.next();
+            if (contacts.get(key).city.equals(cityName)) {
+                System.out.println("These are the candidates whose from " +cityName);
+                System.out.println(contacts.get(key).firstName +" " + contacts.get(key).lastName);
+            }
+        }
+    }
+    /*public void displayAddressBook()
+    {
+        System.out.println("Existing AddressBook Names are : ");
+        System.out.println(addressBookList);
+    }*/
+
+    public void searchPersonByState(){
+        System.out.println("Enter the state to search person.");
+        String stateName = sc.next();
+        Iterator<Integer> itr = contacts.keySet().iterator();
+        while (itr.hasNext()) {
+            int key = itr.next();
+            if (contacts.get(key).state.equals(stateName)) {
+                System.out.println("These are the candidates whose from " +stateName );
+                System.out.println(contacts.get(key).firstName +" " + contacts.get(key).lastName);
+            }
+        }
     }
 
     public static void main(String[] args) {
-        System.out.println("-----Welcome to Address BOOK MANAGEMENT SYSTEM-----\n");
-        addressbook.menu();
+        System.out.println("-------Welcome to Address Book Manager-----\n");
+        addressbook.menu();               //listing like menu-bar
     }
 }

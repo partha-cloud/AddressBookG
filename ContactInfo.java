@@ -1,5 +1,8 @@
 public class ContactInfo {
     public String firstName;
+    public String lastName;
+    public String state;
+    public String city;
     String FIRST_NAME;
     String LAST_NAME;
     String ADDRESS;
